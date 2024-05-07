@@ -3,6 +3,7 @@ from getpass import getpass                # Usado para que la contraseña no se
 
 
 hash="a389a638dec32538f55b0c8dc5c84f84aad65bcd5aacd5f05d36f30b71271a6b"
+salida="a389a638dec32538f55b0c8dc5c84f84aad65bcd5aacd5f05d36f30b71271a6b"           # NECESARIO ELIMINAR AL ACABAR SCRIPT
 
 #############################################
 ## Funcion que imprime por pantalla un menú##
@@ -31,10 +32,10 @@ dbserver=mysql.connector.connect(        # Variable con los datos necesarios par
 
 cursor=dbserver.cursor()                  # Es necesario crear un cursor para que funcione la libreria de mysql.connector
 
-contr=getpass("Contraseña: ")             # Pido por consola la contraseña y la guardo en una variable
-passwd= hashlib.sha256()
-passwd.update(contr.encode('utf-8'))      # Creo una variable en la que uso la liberia hashlib con sha256 y codifico la cadena con utf-8 para despues devolver
-salida=passwd.hexdigest()                 # los datos como cadena hexadecimal
+#contr=getpass("Contraseña: ")             # Pido por consola la contraseña y la guardo en una variable
+#passwd= hashlib.sha256()
+#passwd.update(contr.encode('utf-8'))      # Creo una variable en la que uso la liberia hashlib con sha256 y codifico la cadena con utf-8 para despues devolver
+#salida=passwd.hexdigest()                 # los datos como cadena hexadecimal
 
 if salida==hash:                          
     menu()
@@ -63,17 +64,39 @@ if salida==hash:
                 print("Ver contraseña")
                 # Aqui codigo sobre ver contraseñas #
 
+
             elif option2==2:
-                print ("Ver webs almacenadas")
                 # Aqui codigo sobre ver sitios web #
 
+                cursor.execute("SELECT * FROM webs")           
+                webs=cursor.fetchall()
+                
+                print ("Webs disponibles:")
+                print ("--------------")
+                for web in webs:
+                    print(web)
+
+
             elif option2==3:
-                print ("Borrar contraseña")
                 # Aqui codigo sobre borrar contraseña #
+
+                web=input("Sitio web que deseas eliminar: ")
+
+                cursor.execute(f"DELETE FROM contrasenas WHERE Id_web in (SELECT ID FROM webs WHERE Nombre='{web}')")
+                cursor.execute(f"DELETE FROM webs WHERE Nombre='{web}'")
+
+                dbserver.commit()
+
+                print("Contraseña borrada.")
+
+                menu()
+                option = int(input("Elija una opcion: "))
+
 
             elif option2==4:
                 menu()
                 option=int(input("Di una opcion: "))
+
         elif option==3:
             print("Saliendo...")
             break
