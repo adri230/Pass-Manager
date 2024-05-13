@@ -1,5 +1,7 @@
-import hashlib, mysql.connector            # Usado para el cifrado hash de la contraseña
-from getpass import getpass                # Usado para que la contraseña no se vea
+## ANTES DE EJECUTAR EL SCRIPT INSTALAR CON PIP mysql.connector y pyperclip
+
+import hashlib, mysql.connector, pyperclip    # Usado para el cifrado hash de la contraseña, conectar con MySQL y copiar la contraseña en el portapapeles
+from getpass import getpass                   # Usado para que la contraseña no se vea
 
 
 hash="a389a638dec32538f55b0c8dc5c84f84aad65bcd5aacd5f05d36f30b71271a6b"
@@ -61,8 +63,14 @@ if salida==hash:
             menu2()
             option2= int(input("Di una opcion: "))
             if option2==1:
-                print("Ver contraseña")
                 # Aqui codigo sobre ver contraseñas #
+
+                web=input("Sitio web del que deseas la contraseña: ")
+                cursor.execute(f"SELECT Contraseña FROM Contrasenas WHERE Id_web IN (SELECT ID FROM webs WHERE Nombre='{web}')")
+
+                passwd=cursor.fetchone()                    ## TENGO QUE COMENTAR TODA ESTA PARTE 
+                for passw in passwd:
+                    pyperclip.copy(passw)
 
 
             elif option2==2:
