@@ -11,7 +11,7 @@ Esta base de datos va a contener dos tablas llamadas webs y contrasenas, respect
 Además también es necesario descargar mediante [pip](https://pip.pypa.io/en/stable/) varias bibliotecas:
 
 ```bash
-pip install fido2 mysql-connector pyperclip
+pip install fido2 mysql-connector pyperclip tk
 ```
 
 ## Uso
