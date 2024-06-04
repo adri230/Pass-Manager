@@ -33,11 +33,10 @@ def main_menu():
         cursor.execute(f"INSERT INTO contrasenas(contraseña, Id_web) SELECT '{contraseña}', webs.ID FROM webs WHERE webs.Nombre='{web}'")
 
         dbserver.commit()             # Hago un commit para guardar la insercion de datos
-        messagebox.showinfo()
+        messagebox.showinfo("Información","Contraseña Almacenada")
 
     def access_pass():
         submenu=ctk.CTkToplevel()
-        #submenu=tkinter.Toplevel()
         submenu.title("Acceso a contraseñas")
         submenu.geometry("400x300")
 
@@ -73,13 +72,14 @@ def main_menu():
             dbserver.commit()
             messagebox.showinfo("Información","Contraseña borrada")
 
-        tkinter.Button(master=submenu, text="Ver contraseña de sitio web", command=show_pass).pack(anchor="center")
-        tkinter.Button(master=submenu,text="Ver sitios webs almacenados", command=show_webs).pack(anchor="center")
-        tkinter.Button(master=submenu,text="Borrar contraseña", command=delete_pass).pack(anchor="center")
+        ctk.CTkButton(master=submenu, text="Ver contraseña de sitio web", command=show_pass).pack(anchor="center")
+        ctk.CTkButton(master=submenu,text="Ver sitios webs almacenados", command=show_webs).pack(anchor="center")
+        ctk.CTkButton(master=submenu,text="Borrar contraseña", command=delete_pass).pack(anchor="center")
     
-    tkinter.Button(text="Añadir nueva contraseña",command=add_pass).pack(anchor="center")
-    tkinter.Button(text="Acceder a información sobre contraseñas", command=access_pass).pack(anchor="center")
-    tkinter.Button(text="Salir", command=main.destroy).pack(anchor="center")
+    
+    ctk.CTkButton(master=main, text="Añadir nueva contraseña", command=add_pass).pack(anchor="center")
+    ctk.CTkButton(master=main, text="Acceder a información sobre contraseñas", command=access_pass).pack(anchor="center")
+    ctk.CTkButton(master=main, text="Salir", command=main.destroy).pack(anchor="center")
 
     main.mainloop()
 
@@ -91,8 +91,7 @@ passwd.update(contr.encode('utf-8'))      # Creo una variable en la que uso la l
 salida=passwd.hexdigest()                 # los datos como cadena hexadecimal
 
 if salida==hash:                         
-    devices= True
-    #devices = list(CtapHidDevice.list_devices())            # Variable en la que se guardan los dipositivos FIDO2
+    devices = list(CtapHidDevice.list_devices())            # Variable en la que se guardan los dipositivos FIDO2
     if devices:
 
         main_menu()
